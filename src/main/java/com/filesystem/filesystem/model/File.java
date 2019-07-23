@@ -4,10 +4,12 @@ public class File {
 
     private String name;
     private String extension;
+    private String path;
 
-    public File(String name, String extension) {
+    public File(String name, String extension, String path) {
         this.name = name;
         this.extension = extension;
+        this.path = path;
     }
 
     public String getName() {
@@ -24,5 +26,13 @@ public class File {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
