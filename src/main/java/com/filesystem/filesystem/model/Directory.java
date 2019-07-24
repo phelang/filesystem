@@ -1,25 +1,34 @@
 package com.filesystem.filesystem.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Directory {
+public class Directory<T> {
 
-    private String name;
+    private T name;
+    private Directory<T> parent = null;
+    private List<Directory<T>> directories = new ArrayList<>();
     private List<File> files;
-    private String path;
 
-    public Directory(String name, List<File> files, String path) {
+    public Directory(T name, List<File> files) {
         this.name = name;
         this.files = files;
-        this.path = path;
     }
 
-    public String getName() {
+    public T getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(T name) {
         this.name = name;
+    }
+
+    private void setParent(Directory<T> parent){
+        this.parent = parent;
+    }
+
+    private Directory<T> getParent(){
+        return parent;
     }
 
     public List<File> getFiles() {
@@ -30,11 +39,10 @@ public class Directory {
         this.files = files;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
+    // create sub directory
+    public Directory<T> addDirectory(Directory<T> directory) {
+        directory.setParent(this);
+        this.directories.add(directory);
+        return directory;
     }
 }
