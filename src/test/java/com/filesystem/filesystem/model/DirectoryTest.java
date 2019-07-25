@@ -28,4 +28,22 @@ public class DirectoryTest {
 
         // Assert.assertEquals(home.getSubDirectories()); Get the created child and assert name
     }
+
+    @Test
+    public void testThatADirectoryIsFound() {
+
+        Directory<String> subDir = home
+                .addDirectory(new Directory<>("henie"));
+
+        subDir.addDirectory(new Directory<>("Movies"));
+        subDir.addDirectory(new Directory<>("Music"));
+        subDir.addDirectory(new Directory<>("Games"));
+
+
+        Directory<String> find = subDir.searchDirectory(subDir, "Music");
+
+        Assert.assertTrue(find.getParent().getName().equals("henie"));
+        Assert.assertEquals("Music",find.getName());
+    }
+
 }
