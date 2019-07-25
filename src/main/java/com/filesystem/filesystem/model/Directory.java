@@ -41,7 +41,7 @@ public class Directory<T> {
         this.parent = parent;
     }
 
-    private Directory<T> getParent(){
+    public Directory<T> getParent(){
         return parent;
     }
 
@@ -77,5 +77,25 @@ public class Directory<T> {
         return directories;
     }
 
+    /**
+     * Depth first Tree Traversal.
+     * Starts from a give directory and
+     * loops through all sub directories
+     *
+     * @param Direcotry<T>
+     * @return Directory<T>
+     * **/
 
+    public Directory<T> searchDirectory(Directory<T> directory, T searchFor) {
+
+        Directory<T> find = null;
+        for (Directory<T> dir : directory.getSubDirectories()) {
+            if (dir.getName().equals(searchFor)) {
+                find = dir;
+                break;
+            } else
+                searchDirectory(dir, searchFor);
+        }
+        return find;
+    }
 }
