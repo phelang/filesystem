@@ -46,4 +46,20 @@ public class DirectoryTest {
         Assert.assertEquals("Music",find.getName());
     }
 
+    @Test
+    public void testThatDirectoryIsDeleted() {
+
+        Directory<String> subDir = home
+                .addDirectory(new Directory<>("henie"));
+
+        subDir.addDirectory(new Directory<>("Movies"));
+        subDir.addDirectory(new Directory<>("Music"));
+        subDir.addDirectory(new Directory<>("Games"));
+
+        Directory<String> find = subDir.searchDirectory(subDir, "Games");
+        Directory<String> deletedDir = find.deleteDirectory();
+
+        Assert.assertNull(subDir.searchDirectory(subDir, deletedDir.getName()));
+
+    }
 }
