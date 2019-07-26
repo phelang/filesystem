@@ -62,4 +62,33 @@ public class DirectoryTest {
         Assert.assertNull(subDir.searchDirectory(subDir, deletedDir.getName()));
 
     }
+
+    @Test
+    public void testThatDirectoryIsUpdated() {
+
+        Directory<String> subDir = home
+                .addDirectory(new Directory<>("henie"));
+
+        subDir.addDirectory(new Directory<>("Movies"));
+        subDir.addDirectory(new Directory<>("Music"));
+        subDir.addDirectory(new Directory<>("Games"));
+
+        Directory<String> findForUpdate = subDir.searchDirectory(subDir, "Games");
+        Directory<String> updatedDir = findForUpdate.updateDirectory("Hobbies");
+
+
+        /**
+         * findForUpdate directory was updated hence it should not exist as 'Games' because the name was updated to 'Hobbies'
+         *
+         * NOTE: Because java objects points to object reference by default
+         * the values of objects findForUpdate and updateDir will point
+         * to the same object reference hence we use liral values insted of getName() method
+         */
+        Assert.assertNull(subDir.searchDirectory(subDir, "Games"));
+        Assert.assertEquals("Hobbies", updatedDir.getName());
+
+        Directory<String> findUpdated = subDir.searchDirectory(subDir, "Hobbies");
+
+        Assert.assertEquals("Hobbies", findUpdated.getName());
+    }
 }
