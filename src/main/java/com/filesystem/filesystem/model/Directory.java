@@ -87,7 +87,6 @@ public class Directory<T> {
      * **/
 
     public Directory<T> searchDirectory(Directory<T> directory, T searchFor) {
-
         Directory<T> find = null;
         for (Directory<T> dir : directory.getSubDirectories()) {
             if (dir.getName().equals(searchFor)) {
@@ -97,5 +96,15 @@ public class Directory<T> {
                 searchDirectory(dir, searchFor);
         }
         return find;
+    }
+
+    public Directory<T> deleteDirectory(){
+        if(parent != null){
+            this.parent.getSubDirectories().remove(this);
+        } else {
+            deleteDirectory();
+        }
+        this.getSubDirectories().clear();
+        return this;
     }
 }
