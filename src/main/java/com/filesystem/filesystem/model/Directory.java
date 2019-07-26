@@ -98,6 +98,12 @@ public class Directory<T> {
         return find;
     }
 
+    /**
+     * Deletes the selected directory using this object reference
+     * to identity the directory to be deleted.
+     *
+     * @return Directory<T>
+     */
     public Directory<T> deleteDirectory(){
         if(parent != null){
             this.parent.getSubDirectories().remove(this);
@@ -105,6 +111,17 @@ public class Directory<T> {
             deleteDirectory();
         }
         this.getSubDirectories().clear();
+        return this;
+    }
+
+    /**
+     * Rename the directory name.
+     *
+     * @return Directory<T>
+     */
+
+    public Directory<T> updateDirectory(T name){
+        this.setName(name);
         return this;
     }
 }
