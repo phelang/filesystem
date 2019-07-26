@@ -14,6 +14,7 @@ import java.util.List;
 public class Directory<T> {
 
     private T name;
+    private String path;
     private Directory<T> parent = null;
     private List<Directory<T>> directories = new ArrayList<>();
     private List<File> files; // Can also be HashMap, Map data structure
@@ -64,6 +65,7 @@ public class Directory<T> {
      */
     public Directory<T> addDirectory(Directory<T> directory) {
         directory.setParent(this);
+        this.path = this.parent + "/" + name;
         this.directories.add(directory);
         return directory;
     }
