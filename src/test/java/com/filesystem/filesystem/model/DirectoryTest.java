@@ -14,7 +14,7 @@ public class DirectoryTest {
     }
 
     @Test
-    public void testThatRootDirectoryIsCreated() {
+    public void testThatHomeDirectoryIsCreated() {
 
         Assert.assertEquals("home", home.getHomeDirectory().getName());
 
@@ -25,128 +25,111 @@ public class DirectoryTest {
     }
 
     @Test
-    public void testThatRootDirectoryExistTraversingFromSubDirectories() {
-
-        Directory<String> user = home
-                .addDirectory(new Directory<>("henie"));
-
-        // movies directory, path:home/movies
-        Directory<String> movies = new Directory<>("movies");
-        user.addDirectory(movies);
-
-        // action sub directory of movies, path:home/movies/action
-        Directory<String> action = new Directory<>("action");
-        movies.addDirectory(action);
-
-        // Get home directory from path:home/movies
-        Assert.assertEquals("home", movies.getHomeDirectory().getName());
-
-        // Get home directory from path:home/movies/action
-        Assert.assertNotEquals("action", action.getHomeDirectory().getName());
-
-        Assert.assertEquals("home", action.getHomeDirectory().getName());
-
-    }
-
-    @Test
     public void testPathOfDirectories() {
 
         Directory<String> user = home
-                .addDirectory(new Directory<>("henie"));
+                .addDirectory(new Directory<>("hanlie"));
 
-        Directory<String> movies = new Directory<>("movies");
+        Directory<String> movies = new Directory<>("Movies");
+        Directory<String> action = new Directory<>("Action");
+
         user.addDirectory(movies);
-
-        Directory<String> action = new Directory<>("action");
         movies.addDirectory(action);
 
         Assert.assertEquals("home", home.getPath());
-        Assert.assertEquals("home/henie", user.getPath());
-        Assert.assertEquals("home/henie/movies", movies.getPath());
-        Assert.assertEquals("home/henie/movies/action", action.getPath());
+        Assert.assertEquals("home/hanlie", user.getPath());
+        Assert.assertEquals("home/hanlie/Movies", movies.getPath());
+        Assert.assertEquals("home/hanlie/Movies/Action", action.getPath());
 
     }
 
     @Test
-    public void testThatSubDirectoryIsCreated() {
+    public void testThatHomeDirectoryExistFromAnyGivenSubDirectory() {
 
         Directory<String> user = home
                 .addDirectory(new Directory<>("henie"));
+
+        Directory<String> movies = new Directory<>("Movies");
+        Directory<String> action = new Directory<>("Action");
+
+        user.addDirectory(movies);
+        movies.addDirectory(action);
+
+        Assert.assertEquals("home", action.getHomeDirectory().getName());
+    }
+
+    @Test
+    public void testThatSubDirectoriesAreCreated() {
+
+        Directory<String> user = home
+                .addDirectory(new Directory<>("hanlie"));
 
         user.addDirectory(new Directory<>("Movies"));
         user.addDirectory(new Directory<>("Music"));
         user.addDirectory(new Directory<>("Games"));
 
-        // home sub directories
+        // user directory
+        Assert.assertEquals(home, user.getParent());
         Assert.assertEquals(1, home.getSubDirectories().size());
 
-        // user parent directory
-        Assert.assertEquals(home, user.getParent());
-
-        // sub directories size
+        // user sub directories
         Assert.assertEquals(3, user.getSubDirectories().size());
     }
 
     @Test
-    public void testThatADirectoryIsFound() {
+    public void testThatSearchDirectoryIsFound() {
 
-        Directory<String> subDir = home
-                .addDirectory(new Directory<>("henie"));
+        Directory<String> user = home
+                .addDirectory(new Directory<>("hanlie"));
 
-        subDir.addDirectory(new Directory<>("Movies"));
-        subDir.addDirectory(new Directory<>("Music"));
-        subDir.addDirectory(new Directory<>("Games"));
+        user.addDirectory(new Directory<>("Movies"));
+        user.addDirectory(new Directory<>("Music"));
+        user.addDirectory(new Directory<>("Games"));
 
 
-        Directory<String> find = subDir.searchDirectory(subDir, "Music");
+        Directory<String> findDirectory = user.searchDirectory(user, "Music");
 
-        Assert.assertTrue(find.getParent().getName().equals("henie"));
-        Assert.assertEquals("Music",find.getName());
+        Assert.assertEquals("Music",findDirectory.getName());
+        Assert.assertEquals("home/hanlie/Music", findDirectory.getPath());
+        Assert.assertEquals("hanlie", findDirectory.getParent().getName());
     }
 
     @Test
     public void testThatDirectoryIsDeleted() {
 
-        Directory<String> subDir = home
-                .addDirectory(new Directory<>("henie"));
+        Directory<String> user = home
+                .addDirectory(new Directory<>("hanlie"));
 
-        subDir.addDirectory(new Directory<>("Movies"));
-        subDir.addDirectory(new Directory<>("Music"));
-        subDir.addDirectory(new Directory<>("Games"));
+        user.addDirectory(new Directory<>("Movies"));
+        user.addDirectory(new Directory<>("Music"));
+        user.addDirectory(new Directory<>("Games"));
 
-        Directory<String> find = subDir.searchDirectory(subDir, "Games");
-        Directory<String> deletedDir = find.deleteDirectory();
+        Directory<String> findDirectory = user.searchDirectory(user, "Games");
+        Directory<String> deletedDir = findDirectory.deleteDirectory();
 
-        Assert.assertNull(subDir.searchDirectory(subDir, deletedDir.getName()));
-
+        Assert.assertNull(user.searchDirectory(user, deletedDir.getName()));
     }
 
     @Test
     public void testThatDirectoryIsUpdated() {
 
-        Directory<String> subDir = home
-                .addDirectory(new Directory<>("henie"));
+        Directory<String> user = home
+                .addDirectory(new Directory<>("hanlie"));
 
-        subDir.addDirectory(new Directory<>("Movies"));
-        subDir.addDirectory(new Directory<>("Music"));
-        subDir.addDirectory(new Directory<>("Games"));
+        user.addDirectory(new Directory<>("Movies"));
+        user.addDirectory(new Directory<>("Music"));
+        user.addDirectory(new Directory<>("Games"));
 
-        Directory<String> findForUpdate = subDir.searchDirectory(subDir, "Games");
-        Directory<String> updatedDir = findForUpdate.updateDirectory("Hobbies");
+        Directory<String> findToUpdateDirectory = user.searchDirectory(user, "Games");
+        Directory<String> updatedDirectory = findToUpdateDirectory.updateDirectory("Hobbies");
 
 
         /**
-         * findForUpdate directory was updated hence it should not exist as 'Games' because the name was updated to 'Hobbies'
-         *
          * NOTE: Because java objects points to object reference by default
-         * the values of objects findForUpdate and updateDir will point
-         * to the same object reference hence we use liral values insted of getName() method
+         * the values of objects findDirectory and updateDirectory will point
+         * to the same object reference hence
          */
-        Assert.assertNull(subDir.searchDirectory(subDir, "Games"));
-        Assert.assertEquals("Hobbies", updatedDir.getName());
-
-        Directory<String> findUpdated = subDir.searchDirectory(subDir, "Hobbies");
-
-        Assert.assertEquals("Hobbies", findUpdated.getName());
+        Assert.assertNull(user.searchDirectory(user, "Games"));
+        Assert.assertEquals("Hobbies", updatedDirectory.getName());
     }
 }
