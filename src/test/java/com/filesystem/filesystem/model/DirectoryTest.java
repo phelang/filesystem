@@ -17,6 +17,11 @@ public class DirectoryTest {
     public void testThatRootDirectoryIsCreated() {
 
         Assert.assertEquals("home", home.getHomeDirectory().getName());
+
+        Assert.assertEquals("home", home.getName());
+        Assert.assertEquals("home", home.getPath());
+        Assert.assertEquals(null ,home.getParent());
+
     }
 
     @Test
@@ -33,7 +38,6 @@ public class DirectoryTest {
         Directory<String> action = new Directory<>("action");
         movies.addDirectory(action);
 
-
         // Get home directory from path:home/movies
         Assert.assertEquals("home", movies.getHomeDirectory().getName());
 
@@ -41,6 +45,25 @@ public class DirectoryTest {
         Assert.assertNotEquals("action", action.getHomeDirectory().getName());
 
         Assert.assertEquals("home", action.getHomeDirectory().getName());
+
+    }
+
+    @Test
+    public void testPathOfDirectories() {
+
+        Directory<String> user = home
+                .addDirectory(new Directory<>("henie"));
+
+        Directory<String> movies = new Directory<>("movies");
+        user.addDirectory(movies);
+
+        Directory<String> action = new Directory<>("action");
+        movies.addDirectory(action);
+
+        Assert.assertEquals("home", home.getPath());
+        Assert.assertEquals("home/henie", user.getPath());
+        Assert.assertEquals("home/henie/movies", movies.getPath());
+        Assert.assertEquals("home/henie/movies/action", action.getPath());
 
     }
 
