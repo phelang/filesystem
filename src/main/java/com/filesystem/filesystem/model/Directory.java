@@ -30,6 +30,20 @@ public class Directory<T> {
         this.files = files;
     }
 
+    /**
+     * Upwards recursive call using parent directory as object reference
+     * traverse from parent this directory to parent of immediate next upper level parent
+     * until root directory is found with null parent reference
+     *
+     * @return Directory<T>
+     */
+    public Directory<T> getHomeDirectory(){
+        if(parent == null){
+            return this;
+        }
+        return parent.getHomeDirectory();
+    }
+
     public T getName() {
         return name;
     }
