@@ -22,11 +22,13 @@ public class Directory<T> {
 
     public Directory(T name){
         this.name = name;
+        this.path = name.toString();
         this.files = null;
     }
 
     public Directory(T name, List<File> files) {
         this.name = name;
+        this.path = name.toString();
         this.files = files;
     }
 
@@ -52,6 +54,10 @@ public class Directory<T> {
         this.name = name;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     private void setParent(Directory<T> parent){
         this.parent = parent;
     }
@@ -60,12 +66,16 @@ public class Directory<T> {
         return parent;
     }
 
-    public List<File> getFiles() {
-        return files;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setFiles(List<File> files) {
         this.files = files;
+    }
+
+    public List<File> getFiles() {
+        return files;
     }
 
     /***
@@ -79,13 +89,13 @@ public class Directory<T> {
      */
     public Directory<T> addDirectory(Directory<T> directory) {
         directory.setParent(this);
-        this.path = this.parent + "/" + name;
+        directory.setPath(directory.parent.getPath() + "/" + directory.getName());
         this.directories.add(directory);
         return directory;
     }
 
     /**
-     * Retutn the list of sub direcories.
+     * Return the list of sub direcories.
      *
      * @return directory list.
      */
