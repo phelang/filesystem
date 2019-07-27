@@ -16,17 +16,52 @@ public class DirectoryTest {
     @Test
     public void testThatRootDirectoryIsCreated() {
 
+        Assert.assertEquals("home", home.getHomeDirectory().getName());
+    }
+
+    @Test
+    public void testThatRootDirectoryExistTraversingFromSubDirectories() {
+
+        Directory<String> user = home
+                .addDirectory(new Directory<>("henie"));
+
+        // movies directory, path:home/movies
+        Directory<String> movies = new Directory<>("movies");
+        user.addDirectory(movies);
+
+        // action sub directory of movies, path:home/movies/action
+        Directory<String> action = new Directory<>("action");
+        movies.addDirectory(action);
+
+
+        // Get home directory from path:home/movies
+        Assert.assertEquals("home", movies.getHomeDirectory().getName());
+
+        // Get home directory from path:home/movies/action
+        Assert.assertNotEquals("action", action.getHomeDirectory().getName());
+
+        Assert.assertEquals("home", action.getHomeDirectory().getName());
+
     }
 
     @Test
     public void testThatSubDirectoryIsCreated() {
 
-        Directory<? extends String> subDir = home
+        Directory<String> user = home
                 .addDirectory(new Directory<>("henie"));
 
+        user.addDirectory(new Directory<>("Movies"));
+        user.addDirectory(new Directory<>("Music"));
+        user.addDirectory(new Directory<>("Games"));
+
+        // home sub directories
         Assert.assertEquals(1, home.getSubDirectories().size());
 
-        // Assert.assertEquals(home.getSubDirectories()); Get the created child and assert name
+        // user parent directory
+        Assert.assertEquals(home, user.getParent());
+
+        // sub directories size
+        Assert.assertEquals(3, user.getSubDirectories().size());
     }
 
     @Test
