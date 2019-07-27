@@ -15,6 +15,7 @@ public class Directory<T> {
 
     private T name;
     private String path;
+    private int level;
     private Directory<T> parent = null;
     private List<Directory<T>> directories = new ArrayList<>();
     private List<File> files; // Can also be HashMap, Map data structure
@@ -23,12 +24,14 @@ public class Directory<T> {
     public Directory(T name){
         this.name = name;
         this.path = name.toString();
+        this.level = 0;
         this.files = null;
     }
 
     public Directory(T name, List<File> files) {
         this.name = name;
         this.path = name.toString();
+        this.level = 0;
         this.files = files;
     }
 
@@ -46,16 +49,28 @@ public class Directory<T> {
         return parent.getHomeDirectory();
     }
 
-    public T getName() {
-        return name;
-    }
-
     public void setName(T name) {
         this.name = name;
     }
 
+    public T getName() {
+        return name;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public String getPath() {
         return path;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     private void setParent(Directory<T> parent){
@@ -66,9 +81,6 @@ public class Directory<T> {
         return parent;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public void setFiles(List<File> files) {
         this.files = files;
@@ -89,9 +101,22 @@ public class Directory<T> {
      */
     public Directory<T> addDirectory(Directory<T> directory) {
         directory.setParent(this);
-        directory.setPath(directory.parent.getPath() + "/" + directory.getName());
+        directory.setPath(this.getPath() + "/" + directory.getName());
+        directory.setLevel(findLevel());
         this.directories.add(directory);
         return directory;
+    }
+
+    /**
+     * Find level of directory using directory path.
+     *
+     * @return length
+     */
+
+    private int findLevel(){
+        String[] pathVariables = this.path.split("[/]");
+
+        return pathVariables.length;
     }
 
     /**
@@ -145,9 +170,45 @@ public class Directory<T> {
      *
      * @return Directory<T>
      */
-
     public Directory<T> updateDirectory(T name){
         this.setName(name);
         return this;
+    }
+
+
+    /**
+     * Move directory from current directory to another directory in file system.
+     *
+     * @return Directory<T>
+     */
+    public boolean moveDirectory(Directory<T> toDirectory){
+
+        String[] fromPathVariables = this.path.split("[/]");
+        String[] toPathVariables = toDirectory.getPath().split("[/]");
+
+        if(fromPathVariables[this.getLevel()].equals(toPathVariables[this.getLevel()])){
+            /*
+                Process not allowed
+             */
+            return false;
+        } else{
+            /**
+             * Move this directory,
+             * Because by default java variables point to object reference,
+             * the moved file is the same object simple changes if the parent directory,
+             * And that there is no need to delete moved directory
+             */
+            toDirectory.addDirectory(this);
+
+            /** check that Directory being moved has sub directories
+             * if so then recursively amend the path variables of
+             * sub directories
+             */
+
+            //TO:DO
+
+            return true;
+        }
+
     }
 }
