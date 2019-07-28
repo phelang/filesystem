@@ -239,4 +239,75 @@ public class DirectoryTest {
                         .getPath());
 
     }
+
+    @Test
+    public void testThatDirectoryIsCopied() {
+
+        Directory<String> users = home
+                .addDirectory(new Directory<>("users"));
+
+        /**
+         * Users
+         */
+        Directory<String> hanlie = new Directory<>("hanlie");
+        Directory<String> phelang = new Directory<>("phelang");
+
+        users.addDirectory(hanlie);
+        users.addDirectory(phelang);
+
+        /**
+         *  Hanlie Directories
+         */
+        Directory<String> moviesH = new Directory<>("Movies");
+        Directory<String> actionH = new Directory<>("Action");
+        Directory<String> comedyH = new Directory<>("Comedy");
+
+
+        Directory<String> sci_fiH = new Directory<>("Sci-Fi & Fantasy");
+        Directory<String> action_romanceH = new Directory<>("Action Romance");
+        Directory<String> action_comedyH = new Directory<>("Action Comedy");
+
+        hanlie.addDirectory(moviesH);
+
+        moviesH.addDirectory(actionH);
+        moviesH.addDirectory(comedyH);
+
+        actionH.addDirectory(sci_fiH);
+        actionH.addDirectory(action_romanceH);
+        actionH.addDirectory(action_comedyH);
+
+        /**
+         * Phelang Directories
+         */
+
+        Directory<String> moviesP = new Directory<>("Movies");
+        Directory<String> actionP = new Directory<>("Action");
+
+        Directory<String> musicP = new Directory<>("Music");
+        Directory<String> classicalP = new Directory<>("Classical");
+        Directory<String> rockP = new Directory<>("Rock");
+
+        phelang.addDirectory(moviesP);
+        phelang.addDirectory(musicP);
+
+        moviesP.addDirectory(actionP);
+
+        musicP.addDirectory(classicalP);
+        musicP.addDirectory(rockP);
+
+
+
+        // moviesH.copyDirectory(moviesP);
+
+  /*      *//**
+         * Create A new directory that will have the copy of
+         *//*
+        Directory<String> toWatchMovies = new Directory<>("To Watch Movies");
+
+        System.out.println("MOVE MOVIES TO ACTION");
+        // movies.moveDirectory(action);
+
+        System.out.println("MOVE MOVIES TO -> TO Watch Movies");
+        // movies.moveDirectory(toWatchMovies);*/
+    }
 }
