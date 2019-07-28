@@ -195,7 +195,7 @@ public class Directory<T> {
             /**
              * Move this directory,
              * Because by default java variables point to object reference,
-             * the moved file is the same object simple changes if the parent directory,
+             * the moved directory is the same object reference simple changes if the parent directory,
              * And that there is no need to delete moved directory
              */
             toDirectory.addDirectory(this);
@@ -205,9 +205,34 @@ public class Directory<T> {
              * sub directories
              */
 
-            //TO:DO
+            if(this.getSubDirectories().size() > 0){
+
+                this.updateSubDirectoryPaths(this);
+            }
 
             return true;
+        }
+
+    }
+
+    /**
+     * Depth travesal on only sub directories that belong to the moved directory
+     * Use path of parent to check previous level
+     *
+     * if previous home/hanlie/Music is the same as sub directory, rename path to
+     * new parent plus moved directory plus chil name
+     *
+     * @param
+     */
+    public void updateSubDirectoryPaths(Directory<T> directory){
+
+        List<Directory<T>> directories = directory.getSubDirectories();
+
+        for(Directory<T> dir: directories){
+
+            dir.setPath(directory.getPath() + "/" + dir.getName());
+
+            this.updateSubDirectoryPaths(dir);
         }
 
     }
