@@ -197,14 +197,15 @@ public class DirectoryTest {
         Directory<String> toWatchMovies = new Directory<>("To Watch Movies");
         user.addDirectory(toWatchMovies); // add directory to user
 
+
         isMoved = movies.moveDirectory(toWatchMovies);
 
         Assert.assertTrue("home/hanlie/movies -> home/hanlie/To Watch Movies", isMoved);
 
         /**
-         * Check that movies NO LONGER exist in home/hanlie/movies
+         * Check the number of sub directories in home/hanlie/To WatchMovies
          * AND
-         * Check that movies EXIST in home/hanlie/To Watch Movies
+         * Check that movies EXIST in 'home/hanlie/To Watch Movies' with path 'home/hanlie/To Watch Movies/Movies'
          * AND
          * Check that the sub directories of movies exist
          */
@@ -217,6 +218,11 @@ public class DirectoryTest {
                 toWatchMovies
                         .getSubDirectories().get(0)
                         .getName());
+        Assert.assertEquals(
+                "home/hanlie/To Watch Movies/Movies",
+                toWatchMovies
+                        .getSubDirectories().get(0)
+                        .getPath());
 
         Assert.assertEquals(
                 "home/hanlie/To Watch Movies/Movies/Action",
@@ -225,5 +231,12 @@ public class DirectoryTest {
                         .getSubDirectories().get(0)
                         .getSubDirectories().get(0)
                         .getName());
+        Assert.assertEquals(
+                "home/hanlie/To Watch Movies/Movies/Action",
+                toWatchMovies
+                        .getSubDirectories().get(0)
+                        .getSubDirectories().get(0)
+                        .getPath());
+
     }
 }
