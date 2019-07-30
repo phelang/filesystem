@@ -4,7 +4,11 @@ public class File {
 
     private String name;
     private String extension;
+    private String parentName;
     private String path;
+
+    public File() {
+    }
 
     public File(String name, String extension, String path) {
         this.name = name;
@@ -26,6 +30,14 @@ public class File {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public String getPath() {

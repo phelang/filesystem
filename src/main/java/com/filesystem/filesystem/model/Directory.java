@@ -1,7 +1,9 @@
 package com.filesystem.filesystem.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A file system tree structure that supports
@@ -18,13 +20,13 @@ public class Directory<T> implements Cloneable{
     private int level;
     private Directory<T> parent = null;
     private List<Directory<T>> directories = new ArrayList<>();
-    private List<File> files; // Can also be HashMap, Map data structure
+    private List<File> files;
 
     public Directory(T name){
         this.name = name;
         this.path = name.toString();
         this.level = 0;
-        this.files = null;
+        this.files = new ArrayList<>();
     }
 
     public Directory(T name, List<File> files) {
@@ -136,8 +138,10 @@ public class Directory<T> implements Cloneable{
      * @return Directory<T>
      * **/
 
+    static Directory find = null;
+
     public Directory<T> searchDirectory(Directory<T> directory, T searchFor) {
-        Directory<T> find = null;
+        find = null;
         for (Directory<T> dir : directory.getSubDirectories()) {
             if (dir.getName().equals(searchFor)) {
                 find = dir;
@@ -235,102 +239,100 @@ public class Directory<T> implements Cloneable{
         }
     }
 
+    private boolean flag = false;
+
     /**
      * Parallel copy method. Set mutable values for a new Directory
+     *
+     * Find this directory, using search, given name
+     *
+     *
      */
-    private boolean firstCopyDirectory = true;
-    public void copyDirectory(Directory<T> toDirectory, Directory<T> fromDirectory){
+
+    public void copyDirectory(Directory<T> to, Directory<T> from){
 
         Directory<T> copy = new Directory<>(this.getName());
 
-//        if(firstCopyDirectory){
-
-            //try {
-                // copy = (Directory<T>)this.clone();
-
-                //copy.setName(this.getName());
-                copy.setPath(toDirectory.getPath() + "/" + this.getName());
-                copy.setLevel(toDirectory.getLevel() + 1 );
-                copy.setParent(toDirectory);
-                // set the directories
-                copy.setFiles(toDirectory.getFiles());
-
-
-
-
-/*            } catch (CloneNotSupportedException e){
-                e.printStackTrace();
-            }*/
-
-            System.out.println("");
-            System.out.print("Original Name : " + this.name);
-            System.out.print(" | Hash Code : " + this.hashCode());
-            System.out.print(" | Parent : " + this.parent.name);
-
-            System.out.println();
-
-            System.out.print("Copy Name : " + copy.getName());
-            System.out.print(" | Hash Code : " + copy.hashCode());
-            System.out.print(" | Parent : " + copy.getParent().name);
-
-            System.out.println();
-
-            toDirectory.addDirectory(copy); // add the copied directory if it is the first root directory being copied
-            firstCopyDirectory = false;
-  //      } else {
-            //copy.getParent();
-    //    }
-
-        List<Directory<T>> directories = this.getSubDirectories(); // GET THE COPY OF thisDirectory
-
-        for(Directory<T> dir: directories){
-
-            Directory<T> subDirectory = new Directory<>(dir.getName());
-
-            subDirectory.setPath(copy.getPath() + "/" + dir.getName());
-            subDirectory.setLevel(copy.getLevel() + 1 );
-            subDirectory.setParent(copy);
-            // set the directories
-            copy.setFiles(copy.getFiles());
-
-
-            copy.addDirectory(subDirectory);
-
-            /*try{
-                copySubDirectory = (Directory<T>)dir.clone();
-            }catch (CloneNotSupportedException e){
-                e.printStackTrace();
-            }
-
-            if(firstCopyDirectory){
-                //copySubDirectory.setParent(copy);
-                copy.addDirectory(copySubDirectory);
-
-                System.out.println();
-            }
-
-            // toDirectory.addDirectory(copySubDirectory);
-
-            System.out.println("\t\tOriginal Sub Directory PATH : " + dir.getPath() + " | hashCode " + dir.hashCode() + " | Parent " + dir.getParent().getName() + " <- " + dir.getParent().hashCode());
-            System.out.println("\t\tCopy Sub Directory PATH : " + copySubDirectory.getPath() + " | hashCode " + copySubDirectory.hashCode() + " | Parent " + copySubDirectory.getParent().getName() + " <- " + copySubDirectory.getParent().hashCode());
-
-
-            System.out.println("*** TO DIRECTORY - "+ toDirectory.getPath() + " | " + toDirectory.getName() + " | " + toDirectory.hashCode()+ "***");
-            System.out.println("*** TO DIRECTORY UNCHANGED - "+ toDirectoryDontChane.getPath() + " | " + toDirectoryDontChane.getName() + " | " + toDirectoryDontChane.hashCode()+ "***");
-*/
-            //toDirectory.addDirectory(copySubDirectory);
-
-            //toDirectory.addDirectory(copySubDirectory);
-            //dir.setPath(directory.getPath() + "/" + dir.getName());
-
-            //dir.copyDirectory(dir);
+        if (flag == false) {
+            copy = new Directory<>(from.getName());
+            copy.setPath(to.getPath() + "/" + copy.getName());
+            copy.setParent(to);
+            flag = true;
         }
+        for (Directory<T> dir: from.getSubDirectories()){
 
-        /* toDirectory.addDirectory(this);
+            Directory<T> copyC = new Directory<>(dir.getName());
+            copyC.setPath(to.getPath() + "/" + from.getName() + "/" + dir.getName());
+            copyC.setParent(copy);
 
-        if(this.getSubDirectories().size() > 0){
+            // Directory<T> copyChile = new Directory<>(dir.getName());
 
-            this.updateSubDirectoryPaths(this);
-        }*/
+            copyDirectory(dir, copyC);
+
+        }
+    }
+
+    public boolean createFile(Directory<T> toDirectory, String fileName, String extension){
+
+        File file = new File();
+
+        file.setName(fileName);
+        file.setExtension(extension);
+        file.setParentName(toDirectory.getName().toString());
+        file.setPath((toDirectory.getPath() + "/" + fileName));
+
+        return toDirectory.getFiles().add(file);
+    }
+
+    static File foundFile = null;
+
+    public File searchFile(Directory<T> directory, String fileName){
+        foundFile = null;
+        for (Directory<T> dir : directory.getSubDirectories()) {
+            for(File f: dir.getFiles()) {
+                if(f.getName().equals(fileName)){
+                    foundFile = f;
+                    break;
+                }
+            }
+            if(foundFile != null)
+                break;
+            searchFile(dir, fileName);
+        }
+        return foundFile;
+    }
+
+    public boolean deleteFile(Directory<T> directory, File file){
+        return directory.getFiles().remove(file);
+    }
+
+    public File updateFile(Directory<T> directory, File oldFile, File updatedFile){
+
+        int index = directory.getFiles().indexOf(oldFile);
+
+        return directory.getFiles().set(index, updatedFile);
+    }
+    public void moveFile(Directory<T> fromDirectory, Directory<T> toDirectory, File file){
+
+        fromDirectory.getFiles().remove(file);
+        toDirectory.getFiles().add(file);
+
+    }
+
+    public void copyFile(Directory<T> directory){
+
+    }
+
+    public void printDirectoryTree(Directory<T> directory, String appender){
+        System.out.println(appender + directory.getName());
+        for (File f : directory.getFiles()) {
+            System.out.println("    " + appender + f.getName());
+        }
+        for(Directory<T> dir: directory.getSubDirectories()){
+            printDirectoryTree(dir, appender + appender);
+        }
     }
 }
+
+
+
