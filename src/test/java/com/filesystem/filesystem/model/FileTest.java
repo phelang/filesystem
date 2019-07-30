@@ -1,8 +1,12 @@
 package com.filesystem.filesystem.model;
 
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileTest {
 
@@ -29,8 +33,12 @@ public class FileTest {
 
         Assert.assertEquals(3, movies.getFiles().size());
 
-        String appender = " ";
-        home.printDirectoryTree(home, appender);
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -170,5 +178,43 @@ public class FileTest {
 
         String appender2 = " ";
         home.printDirectoryTree(home, appender2);
+    }
+
+    public JSONObject toJSON(Directory<String> directory) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("name", directory.getName());
+
+            List subDirectories = new ArrayList<JSONObject>();
+
+            List files = new ArrayList<JSONObject>();
+
+            List<Directory<String>> directories = directory.getSubDirectories();
+
+            for (Directory<String> subdir : directories) {
+
+                if (isSubDirectoryOf(directory,subdir)) {
+                    for(File f: subdir.getFiles()){
+                        files.add(f.getName());
+                    }
+                    subDirectories.add(toJSON(subdir));
+                }
+            }
+            json.put("directories", subDirectories);
+            json.put("files", files);
+
+            return json;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private boolean isSubDirectoryOf(Directory<String> parentDirectory, Directory<String> subDirectory){
+        if(subDirectory.getParent().equals(parentDirectory)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -1,8 +1,12 @@
 package com.filesystem.filesystem.model;
 
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DirectoryTest {
 
@@ -41,6 +45,13 @@ public class DirectoryTest {
         Assert.assertEquals("home/hanlie/Movies", movies.getPath());
         Assert.assertEquals("home/hanlie/Movies/Action", action.getPath());
 
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
+
     }
 
     @Test
@@ -60,6 +71,13 @@ public class DirectoryTest {
         Assert.assertEquals("home/user/Movies", 2, movies.getLevel());
         Assert.assertEquals("home/user/Movies/Action", 3, action.getLevel());
 
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -75,6 +93,14 @@ public class DirectoryTest {
         movies.addDirectory(action);
 
         Assert.assertEquals("home", action.getHomeDirectory().getName());
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
+
     }
 
     @Test
@@ -93,6 +119,13 @@ public class DirectoryTest {
 
         // user sub directories
         Assert.assertEquals(3, user.getSubDirectories().size());
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -111,6 +144,13 @@ public class DirectoryTest {
         Assert.assertEquals("Music",findDirectory.getName());
         Assert.assertEquals("home/hanlie/Music", findDirectory.getPath());
         Assert.assertEquals("hanlie", findDirectory.getParent().getName());
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -127,6 +167,13 @@ public class DirectoryTest {
         Directory<String> deletedDir = findDirectory.deleteDirectory();
 
         Assert.assertNull(user.searchDirectory(user, deletedDir.getName()));
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -150,6 +197,13 @@ public class DirectoryTest {
          */
         Assert.assertNull(user.searchDirectory(user, "Games"));
         Assert.assertEquals("Hobbies", updatedDirectory.getName());
+
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
     }
 
     @Test
@@ -238,6 +292,13 @@ public class DirectoryTest {
                         .getSubDirectories().get(0)
                         .getPath());
 
+        String appender1 = " ";
+        home.printDirectoryTree(home, appender1);
+
+        System.out.println();
+        JSONObject json = toJSON(home);
+        System.out.println(json.toString());
+
     }
 
     // TO:DO
@@ -295,5 +356,37 @@ public class DirectoryTest {
 
         musicP.addDirectory(classicalP);
         musicP.addDirectory(rockP);
+    }
+
+    public JSONObject toJSON(Directory<String> directory) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("name", directory.getName());
+
+            List subDirectories = new ArrayList<JSONObject>();
+
+            List<Directory<String>> directories = directory.getSubDirectories();
+
+            for (Directory<String> subdir : directories) {
+
+                if (isSubDirectoryOf(directory,subdir)) {
+                    subDirectories.add(toJSON(subdir));
+                }
+            }
+            json.put("directories", subDirectories);
+
+            return json;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private boolean isSubDirectoryOf(Directory<String> parentDirectory, Directory<String> subDirectory){
+        if(subDirectory.getParent().equals(parentDirectory)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
