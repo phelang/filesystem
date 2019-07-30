@@ -294,20 +294,5 @@ public class DirectoryTest {
 
         musicP.addDirectory(classicalP);
         musicP.addDirectory(rockP);
-
-
-
-        // moviesH.copyDirectory(moviesP);
-
-  /*      *//**
-         * Create A new directory that will have the copy of
-         *//*
-        Directory<String> toWatchMovies = new Directory<>("To Watch Movies");
-
-        System.out.println("MOVE MOVIES TO ACTION");
-        // movies.moveDirectory(action);
-
-        System.out.println("MOVE MOVIES TO -> TO Watch Movies");
-        // movies.moveDirectory(toWatchMovies);*/
     }
 }
