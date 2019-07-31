@@ -44,12 +44,6 @@
         <div class="col-6 col-md-4"></div>
         <div class="col-6 col-md-4">
 
-            <div>
-            <form ng-submit="createDirectory()">
-                <input type="text" name="number" class="form-control" placeholder="Enter new Directory Name" ng-model="directoryForm.name"/>
-                <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
-            </form>
-
                 <form ng-submit="createToDirectory()">
                     <input type="text" name="number" class="form-control" placeholder="Create New To Directory" ng-model="directoryForm.name"/>
                     <input type="submit" value="Create Directory" class="btn btn-primary btn-block"/>
@@ -85,14 +79,14 @@
                         <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'move'" data-ng-disabled="!mytree.currentNode" />
 
                         <div class="input_panel" data-ng-show="mode == 'new'">
-                            <input type="text" name="number" class="form-control" placeholder="New Directory" ng-model="directoryForm.name"/>
-                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="addChildDone()">
+                            <input type="text" class="form-control" placeholder="New Directory" ng-model="newDirectoryForm.name"/>
+                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="createToDirectory()">
                         </div>
 
                         <div class="input_panel" data-ng-show="mode == 'edit'">
 
-                            <input type="text" data-ng-model="mytree.currentNode.label" class="form-control"/>
-                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="done()">
+                            <input type="text" id="updateValue" class="form-control" ng-model="updateDirectoryForm.name"/>
+                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="updateDirectory()">
                         </div>
 
                         <div class="input_panel" data-ng-show="mode == 'delete'" data-ng-click="done()">

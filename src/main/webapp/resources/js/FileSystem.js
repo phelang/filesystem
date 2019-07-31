@@ -89,7 +89,7 @@
             name: "",
         };
 
-        $scope.createDirectory = function (response) {
+        $scope.createDirectory = function () {
             console.log("File System");
 
             console.log($scope.directoryForm.name);
@@ -120,10 +120,18 @@
          * @type {{toDirectoryName: string, name: string}}
          */
         $scope.newDirectoryForm = {
-            toDirectoryName: "phelang",
-            name: "SUB DIRECTORY TESTING"
+            toDirectoryName: "",
+            name: ""
         };
+
         $scope.createToDirectory = function(response){
+
+            $scope.temporaryNode = angular.copy($scope.mytree.currentNode);
+            console.log($scope.temporaryNode.label);
+
+            $scope.newDirectoryForm.toDirectoryName = $scope.temporaryNode.label;
+
+            console.log($scope.newDirectoryForm);
 
             var method = 'POST';
             var url = '/directory/create';
@@ -139,6 +147,7 @@
 
                 console.log(response.data);
                 init();
+                $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
                 alert("Could Not Add");
@@ -172,10 +181,14 @@
         };
 
         $scope.updateDirectoryForm = {
-            toUpdateName: "SUB DIRECTORY TESTING",
-            name: "This is UPDATES"
+            toUpdateName: "",
+            name: ""
         };
         $scope.updateDirectory = function(response){
+
+            $scope.temporaryNode = angular.copy($scope.mytree.currentNode);
+
+            $scope.updateDirectoryForm.toUpdateName = $scope.temporaryNode.label;
 
             var method = 'POST';
             var url = '/directory/update';
@@ -191,6 +204,7 @@
 
                 console.log(response.data);
                 init();
+                $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
                 alert("Could Not Add");
@@ -223,11 +237,8 @@
             });
         } ;
 
-
-
-
-
         $scope.done = function () {
+
             /* reset */
             $scope.mytree.currentNode.selected = undefined;
             $scope.mytree.currentNode = undefined;

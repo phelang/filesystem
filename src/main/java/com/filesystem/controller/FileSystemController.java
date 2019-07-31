@@ -27,29 +27,21 @@ public class FileSystemController {
 
     private static Directory<String> home = new Directory<>("home");
 
-    //PROVEN THIS WORKS
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DirectoryResponse> creatUser(@RequestBody DirectoryRequest request){
-
-        Directory<String> user = home
-                .addDirectory(new Directory<>(request.getName()));
-
-        DirectoryResponse response = new DirectoryResponse();
-
-
-        return new ResponseEntity<DirectoryResponse>(response, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DirectoryResponse> createDirectory(@RequestBody AddDirectoryRequest request){
 
         Directory<String> requestNewDirectory = new Directory<String>(request.getName());
         Directory<String> findToDirectory = home.searchDirectory(home, request.getToDirectoryName());
 
-        Directory<String> newDir = findToDirectory.addDirectory(requestNewDirectory);
+        DirectoryResponse response = new DirectoryResponse();
+        if(request.getToDirectoryName().equals(home.getName())){
+            home
+                    .addDirectory(new Directory<>(request.getName()));
+        }else {
+            Directory<String> newDir = findToDirectory.addDirectory(requestNewDirectory);
 
-        DirectoryResponse response = new DirectoryResponse(newDir.getName());
-
+            response.setName(newDir.getName());
+        }
         return new ResponseEntity<DirectoryResponse>(response, HttpStatus.OK);
     }
 
