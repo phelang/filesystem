@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--<link rel="icon" type="image/x-icon" href="/resources/images/favicon.png">
+   -->
+    <title>Number Range Summarizer</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- Boootstrap css CDN -->
+    <link rel="stylesheet" href="/resources/css/main.css" />
+
+    <title>RestFull API Getting Started</title>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="/resources/js/NumberSummarizer.js"></script> <!-- Angular JavaScript implementation number summarizer-->
+</head>
+
+<body ng-app="NumberSummarizer" ng-controller="NumberSummarizerController">
+
+<div class="jumbotron text-center" style="background-color:#005eff">
+    <div class="container" >
+        <a href="/" class="lang-logo" style="width:110px;height:120px;">
+            <img src="/resources/images/number-logo.jpg">
+        </a>
+        <h2 style="color:white">Number Summarizer</h2>
+        <p>Enter comma delimited list of numbers, then the program will group the numbers into a range when they are sequential.
+        <pre>Sample Input : 1,3,6,7,8,12,13,14,15,21,22,23,24,31</pre>
+        <pre>Sample Output : 1, 3, 6-8, 12-15, 21-24, 31</pre>
+        </p>
+        <a href="https://scenic-biscayne-40563.herokuapp.com/summarizer/numbers?n=1,3,6,7,8,12,13,14,15,21,22,23,24,31" type="button" class="btn btn-lg btn-primary">
+            <span class="glyphicon glyphicon-link background-color: #0044ff"></span> Request/response API End Point</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-6 col-md-4"></div>
+        <div class="col-6 col-md-4">
+
+
+            <form ng-submit="summarizeNumbers()">
+                <label >Enter comma delimeted list of numbers x </label>
+                <div>
+                    <div>
+                        <input type="text" name="number" id="numbers" class="form-control" placeholder="Enter numbers" ng-model="numbersForm.numbers"/>
+                    </div>
+                <div>
+                    <div>
+                    <input type="text" name="number" id="output" class="form-control" ng-model="summarizedNumbers"/>
+
+                    </div>
+                </div>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
+            </form>
+        </div>
+        <div class="col-6 col-md-4"></div>
+    </div>
+</div>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <hr />
+    <div class="text-center center-block">
+        <br />
+        <a href="https://www.facebook.com/"><i class="fa fa-facebook-square fa-3x social"></i></a>
+        <a href="https://twitter.com/"><i class="fa fa-twitter-square fa-3x social"></i></a>
+        <a href="https://plus.google.com/"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+        <a href=""><i class="fa fa-envelope-square fa-3x social"></i></a>
+    </div>
+    <hr />
+</div>
+
+</body>
+</html>

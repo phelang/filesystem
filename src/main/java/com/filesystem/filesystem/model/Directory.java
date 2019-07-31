@@ -1,9 +1,7 @@
 package com.filesystem.filesystem.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A file system tree structure that supports
