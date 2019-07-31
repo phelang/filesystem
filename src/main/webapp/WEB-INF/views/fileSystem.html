@@ -43,86 +43,57 @@
     <div class="row">
         <div class="col-6 col-md-4"></div>
         <div class="col-6 col-md-4">
-
-                <form ng-submit="createToDirectory()">
-                    <input type="text" name="number" class="form-control" placeholder="Create New To Directory" ng-model="directoryForm.name"/>
-                    <input type="submit" value="Create Directory" class="btn btn-primary btn-block"/>
-                </form>
-
-                <form ng-submit="deleteForm()">
-                    <input type="text" name="number" class="form-control" placeholder="Create New To Directory" ng-model="directoryForm.name"/>
-                    <input type="submit" value="Delete Directory" class="btn btn-primary btn-block"/>
-                </form>
-
-                <form ng-submit="updateDirectory()">
-                    <input type="text" name="number" class="form-control" placeholder="Update Directory" ng-model="directoryForm.name"/>
-                    <input type="submit" value="Update Directory" class="btn btn-primary btn-block"/>
-                </form>
-
-                <form ng-submit="moveDirectory()">
-                    <input type="text" name="number" class="form-control" placeholder="Move Directory" ng-model="directoryForm.name"/>
-                    <input type="submit" value="Move Directory" class="btn btn-primary btn-block"/>
-                </form>
-
-            </div>
             <div>
-            </div>
 
-            <div>
-                <div>
+                <div class="button_panel">
+                    <input type="button" class="btn btn-light" value="New" data-ng-click="mode = 'new'" data-ng-disabled="!mytree.currentNode" />
+                    <input type="button" class="btn btn-light" value="Edit" data-ng-click="mode = 'edit'" data-ng-disabled="!mytree.currentNode" />
 
-                    <div class="button_panel">
-                        <input type="button" class="btn btn-light" value="New" data-ng-click="mode = 'new'" data-ng-disabled="!mytree.currentNode" />
-                        <input type="button" class="btn btn-light" value="Edit" data-ng-click="mode = 'edit'" data-ng-disabled="!mytree.currentNode" />
+                    <input type="button" class="btn btn-light" value="Delete" data-ng-click="mode = 'delete'" data-ng-disabled="!mytree.currentNode" />
+                    <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'move'" data-ng-disabled="!mytree.currentNode" />
 
-                        <input type="button" class="btn btn-light" value="Delete" data-ng-click="mode = 'delete'" data-ng-disabled="!mytree.currentNode" />
-                        <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'move'" data-ng-disabled="!mytree.currentNode" />
-
-                        <div class="input_panel" data-ng-show="mode == 'new'">
-                            <input type="text" class="form-control" placeholder="New Directory" ng-model="newDirectoryForm.name"/>
-                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="createToDirectory()">
-                        </div>
-
-                        <div class="input_panel" data-ng-show="mode == 'edit'">
-
-                            <input type="text" id="updateValue" class="form-control" ng-model="updateDirectoryForm.name"/>
-                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="updateDirectory()">
-                        </div>
-
-                        <div class="input_panel" data-ng-show="mode == 'delete'" data-ng-click="done()">
-                        </div>
-
-                        <div class="input_panel" data-ng-show="mode == 'move'">
-
-                            <input type="text" class="form-control" placeholder="Enter To Directory Name" ng-model="directoryForm.name"/>
-                            <input type="text" class="form-control" placeholder="move" ng-model="mytree.currentNode.label" />
-
-                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="addChildDone()">
-
-                        </div>
+                    <div class="input_panel" data-ng-show="mode == 'new'">
+                        <input type="text" class="form-control" placeholder="New Directory" ng-model="newDirectoryForm.name"/>
+                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="createToDirectory()">
                     </div>
 
-                    <!--
-                      [TREE attribute]
-                      angular-treeview: the treeview directive
-                      tree-id : each tree's unique id.
-                      tree-model : the tree model on $scope.
-                      node-id : each node's id
-                      node-label : each node's label
-                      node-children: each node's children
-                    -->
-                    <div
-                            data-angular-treeview="true"
-                            data-tree-id="mytree"
-                            data-tree-model="roleList">
+                    <div class="input_panel" data-ng-show="mode == 'edit'">
+
+                        <input type="text" id="updateValue" class="form-control" ng-model="updateDirectoryForm.name"/>
+                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="updateDirectory()">
+                    </div>
+
+                    <div class="input_panel" data-ng-show="mode == 'delete'" ng-click="deleteDirectory()">
+                    </div>
+
+                    <div class="input_panel" data-ng-show="mode == 'move'">
+
+                        <input type="text" class="form-control" placeholder="Enter To Directory Name" ng-model="moveDirectoryForm.toDirectoryName"/>
+                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="moveDirectory()">
+
                     </div>
                 </div>
+
+                <!--
+                  [TREE attribute]
+                  angular-treeview: the treeview directive
+                  tree-id : each tree's unique id.
+                  tree-model : the tree model on $scope.
+                  node-id : each node's id
+                  node-label : each node's label
+                  node-children: each node's children
+                -->
+                <div
+                        data-angular-treeview="true"
+                        data-tree-id="mytree"
+                        data-tree-model="roleList">
+                </div>
+            </div>
             </div>
 
-        </div>
-        <div class="col-6 col-md-4"></div>
     </div>
 </div>
+
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">

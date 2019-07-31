@@ -83,38 +83,6 @@
             { label : "Guest", id : "role3", children : [] }
         ];
 */
-
-
-        $scope.directoryForm = {
-            name: "",
-        };
-
-        $scope.createDirectory = function () {
-            console.log("File System");
-
-            console.log($scope.directoryForm.name);
-
-
-            var method = 'POST';
-            var url = '/directory/add';
-
-            $http({
-                method : method,
-                url : url,
-                data : angular.toJson($scope.directoryForm),
-                headers : {
-                    'Content-Type' : 'application/json'
-                }
-            }).then(function successCallBack(response) {  /* HTTP status success */
-
-                console.log(response.data);
-                init();
-
-            }, function errorCallBack(response) {  /* HTTP status error */
-                alert("Could Not Add");
-            });
-        };
-
         /**
          * CREATE DIRECTORY from NAME to NAME
          * @type {{toDirectoryName: string, name: string}}
@@ -147,6 +115,10 @@
 
                 console.log(response.data);
                 init();
+                $scope.newDirectoryForm = {
+                    toDirectoryName: "",
+                    name: ""
+                };
                 $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
@@ -155,9 +127,13 @@
         } ;
 
         $scope.deleteDirectoryForm = {
-            name: "SUB DIRECTORY TESTING"
+            name: ""
         };
-        $scope.deleteForm = function(response){
+        $scope.deleteDirectory = function(response){
+
+            $scope.temporaryNode = angular.copy($scope.mytree.currentNode);
+
+            $scope.deleteDirectoryForm.name = $scope.temporaryNode.label;
 
             var method = 'POST';
             var url = '/directory/delete';
@@ -173,6 +149,7 @@
 
                 console.log(response.data);
                 init();
+                $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
                 alert("Could Not Delete");
@@ -212,10 +189,15 @@
         } ;
 
         $scope.moveDirectoryForm = {
-            moveDirectoryName: "phelang",
-            toDirectoryName: "hanlie"
+            moveDirectoryName: "",
+            toDirectoryName: ""
         };
         $scope.moveDirectory = function(response){
+
+            $scope.temporaryNode = angular.copy($scope.mytree.currentNode);
+            $scope.moveDirectoryForm.moveDirectoryName = $scope.temporaryNode.label;
+
+            console.log($scope.moveDirectoryForm);
 
             var method = 'POST';
             var url = '/directory/move';
