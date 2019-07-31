@@ -78,28 +78,35 @@
                 <div>
 
                     <div class="button_panel">
-                        <input type="button" class="btn btn-light" value="New" data-ng-click="mode = 'editNode'" data-ng-disabled="!mytree.currentNode" />
-                        <input type="button" class="btn btn-light" value="Edit" data-ng-click="mode = 'addChild'" data-ng-disabled="!mytree.currentNode" />
+                        <input type="button" class="btn btn-light" value="New" data-ng-click="mode = 'new'" data-ng-disabled="!mytree.currentNode" />
+                        <input type="button" class="btn btn-light" value="Edit" data-ng-click="mode = 'edit'" data-ng-disabled="!mytree.currentNode" />
 
-                        <input type="button" class="btn btn-light" value="Delete" data-ng-click="mode = 'addChild'" data-ng-disabled="!mytree.currentNode" />
-                        <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'addChild'" data-ng-disabled="!mytree.currentNode" />
+                        <input type="button" class="btn btn-light" value="Delete" data-ng-click="mode = 'delete'" data-ng-disabled="!mytree.currentNode" />
+                        <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'move'" data-ng-disabled="!mytree.currentNode" />
 
-                        <div class="input_panel" data-ng-show="mode == 'editNode'">
-                            <h4>Selected Node</h4>
-                            <label>ID</label> <input data-ng-model="mytree.currentNode.id" disabled/><br />
-                            <label>Label</label> <input data-ng-model="mytree.currentNode.label" /><br />
-                            <input type="button" value="DONE" class="done_button" data-ng-click="done()">
+                        <div class="input_panel" data-ng-show="mode == 'new'">
+                            <input type="text" name="number" class="form-control" placeholder="New Directory" ng-model="directoryForm.name"/>
+                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="addChildDone()">
                         </div>
 
-                        <div class="input_panel" data-ng-show="mode == 'addChild'">
-                            <h4>New Node</h4>
-                            <label>ID</label> <input data-ng-model="temporaryNode.id" /><br />
-                            <label>Label</label> <input data-ng-model="temporaryNode.label" /><br />
-                            <input type="button" value="DONE" class="done_button" data-ng-click="addChildDone()">
+                        <div class="input_panel" data-ng-show="mode == 'edit'">
+
+                            <input type="text" data-ng-model="mytree.currentNode.label" class="form-control"/>
+                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="done()">
+                        </div>
+
+                        <div class="input_panel" data-ng-show="mode == 'delete'" data-ng-click="done()">
+                        </div>
+
+                        <div class="input_panel" data-ng-show="mode == 'move'">
+
+                            <input type="text" class="form-control" placeholder="Enter To Directory Name" ng-model="directoryForm.name"/>
+                            <input type="text" class="form-control" placeholder="move" ng-model="mytree.currentNode.label" />
+
+                            <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="addChildDone()">
+
                         </div>
                     </div>
-
-
 
                     <!--
                       [TREE attribute]
@@ -115,7 +122,6 @@
                             data-tree-id="mytree"
                             data-tree-model="roleList">
                     </div>
-
                 </div>
             </div>
 
