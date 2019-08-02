@@ -25,22 +25,30 @@ import java.util.List;
 @RequestMapping("/directory")
 public class FileSystemController {
 
-    private static Directory<String> home = new Directory<>("home");
+    private Directory<String> home = new Directory<>("home");
+    private Directory<String> requestNewDirectory = null;
+    Directory<String> findToDirectory = new Directory<>("");
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DirectoryResponse> createDirectory(@RequestBody AddDirectoryRequest request){
 
-        Directory<String> requestNewDirectory = new Directory<String>(request.getName());
-        Directory<String> findToDirectory = home.searchDirectory(home, request.getToDirectoryName());
+        requestNewDirectory = new Directory<String>(request.getName());
+
+        System.out.println("request data : " +request.getToDirectoryName());
+
+        Directory<String> e = new Directory<>("find");
+        Directory<String> temp = home.searchDirectory(home, request.getToDirectoryName(), e);
 
         DirectoryResponse response = new DirectoryResponse();
         if(request.getToDirectoryName().equals(home.getName())){
             home
                     .addDirectory(new Directory<>(request.getName()));
         }else {
-            Directory<String> newDir = findToDirectory.addDirectory(requestNewDirectory);
+            //findToDirectory = home.searchDirectory(home, request.getToDirectoryName());
 
-            response.setName(newDir.getName());
+            Directory<String> result = temp.addDirectory(new Directory<>(request.getName()));
+
+            response.setName(result.getName());
         }
         return new ResponseEntity<DirectoryResponse>(response, HttpStatus.OK);
     }
@@ -48,7 +56,11 @@ public class FileSystemController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DirectoryResponse> deleteDirectory(@RequestBody DirectoryRequest request){
 
-        Directory<String> findDeleteDirectory = home.searchDirectory(home, request.getName());
+        Directory<String> findDeleteDirectory = home.searchDirectory(home, request.getName(), new Directory<>("find"));
+
+        System.out.println(findDeleteDirectory.getName());
+        System.out.println(findDeleteDirectory.getPath());
+
 
         Directory<String> deleted = findDeleteDirectory.deleteDirectory();
 
@@ -60,7 +72,7 @@ public class FileSystemController {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DirectoryResponse> updateDirectory(@RequestBody UpdateDirectoryRequest request){
 
-        Directory<String> findUpdateDirectory = home.searchDirectory(home, request.getToUpdateName());
+        Directory<String> findUpdateDirectory = home.searchDirectory(home, request.getToUpdateName(), new Directory<>("find"));
 
         Directory<String> updateDirectory = findUpdateDirectory.updateDirectory(request.getName());
 
@@ -72,11 +84,29 @@ public class FileSystemController {
     @RequestMapping(value = "/move", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DirectoryResponse> updateDirectory(@RequestBody MoveDirectoryRequest request){
 
-        Directory<String> fromDirectory = home.searchDirectory(home, request.getMoveDirectoryName());
+        final String find = " ";
+        /*Directory<String>  toDirectory  = */
 
-        Directory<String> toDirectory = home.searchDirectory(home, request.getToDirectoryName());
+        Directory<String>  toDirectory = home.searchDirectory2(home, request.getToDirectoryName() );
 
-        boolean moved = fromDirectory.moveDirectory(toDirectory);
+        Directory<String> fromDirectory = home.searchDirectory(home, request.getMoveDirectoryName(), new Directory<>("find"));
+
+        for( int i = 0; i < 4; i++ ){
+            //toDirectory  = home.searchDirectory(home, request.getToDirectoryName() , new Directory<>("findkjdkj"));
+            fromDirectory= home.searchDirectory(home, request.getMoveDirectoryName(), new Directory<>("find"));
+
+        }
+
+
+        //boolean moved = fromDirectory.moveDirectory(toDirectory);
+
+        System.out.println("From  directory : " + request.getMoveDirectoryName());
+
+        System.out.println("To  directory : " + request.getToDirectoryName());
+
+        System.out.println("Path  directory : " + fromDirectory.getPath());
+
+        //System.out.println("Path  directory : " + toDirectory.getPath());
 
         DirectoryResponse response = new DirectoryResponse();
 
@@ -134,4 +164,19 @@ public class FileSystemController {
             return false;
         }
     }
+
+ /*   public void printDirectoryTree2(Directory<String> directory, String appender){
+        System.out.println(appender + directory.getName());
+        for (File f : directory.getFiles()) {
+            System.out.println("    " + appender + f.getName());
+        }
+        for(Directory<String> dir: directory.getSubDirectories()){
+            if(dir.getName().equals("TO")){
+                System.out.println("TO FOUND");
+                break;
+            }
+            printDirectoryTree(dir, appender + appender);
+        }
+    }*/
+
 }

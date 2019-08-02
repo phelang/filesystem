@@ -50,11 +50,10 @@
                     <input type="button" class="btn btn-light" value="Edit" data-ng-click="mode = 'edit'" data-ng-disabled="!mytree.currentNode" />
 
                     <input type="button" class="btn btn-light" value="Delete" data-ng-click="mode = 'delete'" data-ng-disabled="!mytree.currentNode" />
-                    <input type="button" class="btn btn-light" value="Move" data-ng-click="mode = 'move'" data-ng-disabled="!mytree.currentNode" />
 
                     <div class="input_panel" data-ng-show="mode == 'new'">
                         <input type="text" class="form-control" placeholder="New Directory" ng-model="newDirectoryForm.name"/>
-                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="createToDirectory()">
+                        <input type="button" value="OK" class="btn btn-primary btn-block" ng-click="createToDirectory()">
                     </div>
 
                     <div class="input_panel" data-ng-show="mode == 'edit'">
@@ -63,15 +62,10 @@
                         <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="updateDirectory()">
                     </div>
 
-                    <div class="input_panel" data-ng-show="mode == 'delete'" ng-click="deleteDirectory()">
+                    <div class="input_panel" data-ng-show="mode == 'delete'">
+                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="deleteDirectory()">
                     </div>
 
-                    <div class="input_panel" data-ng-show="mode == 'move'">
-
-                        <input type="text" class="form-control" placeholder="Enter To Directory Name" ng-model="moveDirectoryForm.toDirectoryName"/>
-                        <input type="button" value="OK" class="btn btn-primary btn-block" data-ng-click="moveDirectory()">
-
-                    </div>
                 </div>
 
                 <!--
@@ -90,7 +84,6 @@
                 </div>
             </div>
             </div>
-
     </div>
 </div>
 

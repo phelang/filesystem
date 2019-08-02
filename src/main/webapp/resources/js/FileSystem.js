@@ -32,8 +32,10 @@
                 }
             }).then(function successCallBack(response) {  /!* HTTP status success *!/
 
-                $scope.roleList = response.data;
+                console.log('Tree');
                 console.log(response.data);
+                console.log('Tree');
+                $scope.roleList = response.data;
 
             }, function errorCallBack(response) {  /!* HTTP status error *!/
                 alert("Could not find Directory tree.");
@@ -88,8 +90,8 @@
          * @type {{toDirectoryName: string, name: string}}
          */
         $scope.newDirectoryForm = {
-            toDirectoryName: "",
-            name: ""
+            toDirectoryName: '',
+            name: ''
         };
 
         $scope.createToDirectory = function(response){
@@ -115,14 +117,23 @@
 
                 console.log(response.data);
                 init();
-                $scope.newDirectoryForm = {
-                    toDirectoryName: "",
-                    name: ""
-                };
+
+                $scope.done();
                 $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
-                alert("Could Not Add");
+
+                init();
+                console.log('Tree Above');
+
+                $scope.done();
+                $scope.done();
+
+                alert("Process could not be completed. \n\n" +
+                    "1. Try adding to a different directory.\n\n" +
+                    "2. Delete the directory and re-create. \n\n"+
+
+                    "Caused by angular.treeview component, failure to function in expected way.");
             });
         } ;
 
@@ -152,14 +163,19 @@
                 $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
-                alert("Could Not Delete");
+
+                alert("Process could not be completed. \n\n" +
+                    "1. Try deleting a different directory.\n\n" +
+
+                    "Caused by angular.treeview component, failure to function in expected way.");
+
             });
 
         };
 
         $scope.updateDirectoryForm = {
-            toUpdateName: "",
-            name: ""
+            toUpdateName: '',
+            name: ''
         };
         $scope.updateDirectory = function(response){
 
@@ -181,16 +197,27 @@
 
                 console.log(response.data);
                 init();
+
+                $scope.updateDirectoryForm = {
+                    toUpdateName: '',
+                    name: ''
+                };
+                $scope.done();
                 $scope.done();
 
             }, function errorCallBack(response) {  /* HTTP status error */
-                alert("Could Not Add");
+
+                alert("Process could not be completed. \n\n" +
+                    "1. Try deleting a different directory.\n\n" +
+
+                    "Caused by angular.treeview component, failure to function in expected way.");
+
             });
         } ;
 
         $scope.moveDirectoryForm = {
-            moveDirectoryName: "",
-            toDirectoryName: ""
+            moveDirectoryName: '',
+            toDirectoryName: ''
         };
         $scope.moveDirectory = function(response){
 
@@ -214,6 +241,13 @@
                 console.log(response.data);
                 init();
 
+                $scope.moveDirectoryForm = {
+                    moveDirectoryName: '',
+                    toDirectoryName: ''
+                };
+
+                $scope.done();
+
             }, function errorCallBack(response) {  /* HTTP status error */
                 alert("Could Not Move");
             });
@@ -222,9 +256,18 @@
         $scope.done = function () {
 
             /* reset */
-            $scope.mytree.currentNode.selected = undefined;
-            $scope.mytree.currentNode = undefined;
-            $scope.mode = undefined;
+            $scope.mytree.currentNode.selected = {};
+            $scope.mytree.currentNode = {};
+            $scope.mode = {};
+            $scope.temporaryNode = {};
+            //$scope.directoTree
+
+            $scope.temporaryNode = null;
+
+            $scope.newDirectoryForm = {
+                toDirectoryName: '',
+                name: ''
+            };
         };
 
         $scope.addChildDone = function () {

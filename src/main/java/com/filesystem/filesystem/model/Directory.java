@@ -136,18 +136,15 @@ public class Directory<T> implements Cloneable{
      * @return Directory<T>
      * **/
 
-    static Directory find = null;
-
-    public Directory<T> searchDirectory(Directory<T> directory, T searchFor) {
-        find = null;
+    public final Directory<T> searchDirectory(Directory<T> directory, T searchFor, Directory<T> find) {
         for (Directory<T> dir : directory.getSubDirectories()) {
             if (dir.getName().equals(searchFor)) {
-                find = dir;
-                break;
-            } else
-                searchDirectory(dir, searchFor);
+                return dir;
+            } else {
+                return searchDirectory(dir, searchFor, find);
+            }
         }
-        return find;
+        return null;
     }
 
     /**
@@ -162,7 +159,8 @@ public class Directory<T> implements Cloneable{
         } else {
             deleteDirectory();
         }
-        this.getSubDirectories().clear();
+        if(this.getSubDirectories().size() > 0)
+            this.getSubDirectories().clear();
         return this;
     }
 
@@ -319,6 +317,16 @@ public class Directory<T> implements Cloneable{
 
     public void copyFile(Directory<T> directory){
 
+    }
+
+    public Directory<String> searchDirectory2(Directory<String> directory, String val){
+        for(Directory<String> dir: directory.getSubDirectories()){
+            if(dir.getName().equals("TO")){
+               return dir;
+            }
+            return searchDirectory2(dir, val);
+        }
+        return null;
     }
 
     public void printDirectoryTree(Directory<T> directory, String appender){
