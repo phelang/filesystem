@@ -130,8 +130,9 @@
                 $scope.done();
 
                 alert("Process could not be completed. \n\n" +
-                    "1. Try adding to a different directory.\n\n" +
-                    "2. Delete the directory and re-create. \n\n"+
+                    "1. Re-try." +
+                    "1. Or try adding to a different directory.\n\n" +
+                    "2. Or delete the directory and re-create. \n\n"+
 
                     "Caused by angular.treeview component, failure to function in expected way.");
             });
@@ -167,7 +168,7 @@
                 alert("Process could not be completed. \n\n" +
                     "1. Try deleting a different directory.\n\n" +
 
-                    "Caused by angular.treeview component, failure to function in expected way.");
+                    "Caused by treeview component, failure to function in expected way.");
 
             });
 
@@ -208,9 +209,11 @@
             }, function errorCallBack(response) {  /* HTTP status error */
 
                 alert("Process could not be completed. \n\n" +
-                    "1. Try deleting a different directory.\n\n" +
+                    "1. Re-try.\n\n" +
 
-                    "Caused by angular.treeview component, failure to function in expected way.");
+                    "2. OR try updating a different directory.\n\n" +
+
+                    "Caused by treeview component, failure to function in expected way.");
 
             });
         } ;
